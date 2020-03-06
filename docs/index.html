@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>magic-react-component</title>
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#b91d47">
+    <meta name="msapplication-TileColor" content="#b91d47">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+      textarea,
+      pre {
+        box-sizing: border-box;
+        white-space: pre;
+        display: block;
+        width: 95%;
+        margin: 20px;
+        padding: 40px;
+        border-top: 5px solid black;
+        font-size: 15px;
+      }
+      textarea.highlighted {
+        display: none;
+      }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-core.min.js" data-manual></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/components/prism-css.min.js"></script>
+    <script>
+      function highlight (el) {
+        const markup = el.value
+        const highlighted = Prism.highlight(markup, Prism.languages.jsx)
+        el.className = "highlighted"
+        const hlEl = document.createElement("div")
+        hlEl.innerHTML = `<pre><code class="language-jsx">${highlighted}</code></pre>`
+        el.parentNode.insertBefore(hlEl, el)
+      }
+    </script>
+  </head>
+  <body onload="document.querySelectorAll('textarea').forEach(highlight)">
+    <br>
+    <br>
+    <br>
+    based on the "sx" idea from @peduarte <a href="https://twitter.com/peduarte/status/1235673220776329217">His Tweet</a>
+    <br>
+    <br>
+    <br>
+    <div style="padding: 20px; margin: 20px; background: #f4f4f4;">npm i magic-react-component styled-system styled-components</div>
+
+    <textarea style="height: 250px;">
+import React from 'react'
+import { ThemeProvider } from 'styled-components'
+import theme from './theme'
+import SiteGridLayout from './components/SiteGridLayout'
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <SiteGridLayout />
+    </ThemeProvider>
+  )
+}
+
+export default App
+    </textarea>
+
+    <textarea style="height: 400px;">
+import magicComponent from 'magic-react-component'
+
+const MyStyledFriend = magicComponent(
+  tagName OR ReactComponent,
+
+  ".default.base[non-magical] { css: string; }",
+
+  {
+    "--default-css-props": "values compile from corresponding theme scale (styled-components)",
+    backgroundColor: "red800",
+
+    // create variants with functions that react to the current props:
+    color: ({magicProps}) => magicProps.active ? "white" : "gray900",
+
+    // inline assignment of theme scale to custom props:
+    "--custom-color": ({magicScale}) => magicScale("colors", "blue700"),
+
+    // do both:
+    "--wow": ({magicScale}) => magicScale("colors", ({magicProps}) => magicProps.active ? "blue700" : "white"),
+    "--or": ({magicProps, magicScale}) => magicProps.important ? magicScale("fontSizes", 5) : magicScale("fontSizes", 1)
+  }
+)
+
+<MyStyledFriend magic={passInThemeAwareCSSPropsDynamically} />
+<MyStyledFriend magic={[useAnArrayOfThem, { fontSize: 4 }, toCombineMultipleRuleSets]} />
+    </textarea>
+
+    <textarea style="height: 700px;">
+const TopNav = magicComponent("div", `
+  display: inline-grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  grid-gap: 2px;
+  --aug-t-height: 3px;
+  --aug-border: 2px;
+  --aug-border-bg: black;
+`, {
+  mx: "auto",
+  backgroundColor: "black",
+})
+
+const NavItem = magicComponent("button", `
+  width: 9em;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.95;
+  }
+`, {
+  padding: 1,
+  backgroundColor: ({magicProps}) => magicProps.active ? "blue700" : "white",
+  color: ({magicProps}) => magicProps.active ? "white" : "gray900"
+})
+
+
+render () {
+  const state = this.state
+
+  return (
+    <TopNav data-augmented-ui="bl-clip br-clip t-clip-x exe">
+      {
+        state.areas.map(area => {
+          if (state.area === area) {
+            return ((<NavItem key={area} active>{area}</NavItem>))
+          }
+          return (<NavItem key={area} onClick={() => this.setArea(area)}>{area}</NavItem>);
+        })
+      }
+    </TopNav>
+  )
+}
+    </textarea>
+
+    <textarea style="height: 1100px;">
+const SiteGridLayout = magicComponent("div", `
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  grid-template-columns: 16em 1fr 16em;
+  grid-template-rows: 3em 1fr;
+  grid-template-areas: "top-left top-center top-right"
+                        "left-nav main right-form";
+`)
+
+const GridItem = magicComponent("div")
+
+const headerItemStyleProps = {
+  backgroundColor: "white",
+  borderBottomStyle: "solid",
+  borderBottomWidth: "1px",
+  borderBottomColor: "gray500",
+  color: "gray800",
+  padding: 2
+}
+
+const leftItemStyleProps = {
+  padding: 2
+}
+
+const rightItemStyleProps = {
+  padding: 2
+}
+
+const mainStyleProps = {
+  gridArea: "main",
+  backgroundColor: "gray200",
+  borderRightStyle: "solid",
+  borderRightWidth: "1px",
+  borderRightColor: "gray500",
+  borderLeftStyle: "solid",
+  borderLeftWidth: "1px",
+  borderLeftColor: "gray500",
+  padding: 2
+}
+
+render () {
+  return (
+    <SiteGridLayout>
+      <GridItem magic={[headerItemStyleProps, leftItemStyleProps, { gridArea: "top-left" }]}>
+        <H1>Hello World</H1>
+      </GridItem>
+      <GridItem magic={[headerItemStyleProps, { textAlign: "center", gridArea: "top-center" }]}>
+        <MainNav onValueChange={this.setMainProductArea.bind(this)} />
+      </GridItem>
+      <GridItem magic={[headerItemStyleProps, rightItemStyleProps, { gridArea: "top-right" }]}>
+        Hello World
+      </GridItem>
+
+      <GridItem magic={[leftItemStyleProps, { gridArea: "left-nav" }]}>
+        Hello World
+      </GridItem>
+      <GridItem magic={mainStyleProps}>
+        Hello World
+      </GridItem>
+      <GridItem magic={[rightItemStyleProps, { gridArea: "right-form" }]}>
+        Hello World
+      </GridItem>
+    </SiteGridLayout>
+  )
+}
+    </textarea>
+
+    bitcoin: 3BbiHYTrxk9KCwCoekQu746oDfHRDzfyHw
+  </body>
+</html>

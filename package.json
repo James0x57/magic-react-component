@@ -1,0 +1,15 @@
+{
+  "name": "magic-react-component",
+  "version": "0.0.1",
+  "description": "Create styled & themed React components and variants so easily it's like magic.",
+  "dependencies": {
+    "styled-components": "^5.0.1",
+    "styled-system": "^5.1.5"
+  },
+  "main": "magic-react-component.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James0x57",
+  "license": "MIT"
+}
